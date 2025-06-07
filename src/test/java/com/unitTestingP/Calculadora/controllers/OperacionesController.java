@@ -48,4 +48,33 @@ public class OperacionesController {
                 .jsonPath("$.mensaje")
                 .isEqualTo("resultado: 0");
     }
+
+    @Test
+    public void factorialControllerFailTest() {
+        Mockito.when(
+                        operacionesMock
+                                .factorial(ArgumentMatchers.anyInt()))
+                .thenThrow(ArithmeticException.class);
+        webTestClient.get()
+                .uri("/factorial?numero=-1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.mensaje")
+                .isEqualTo("operacion invalida");
+    }
+
+    public void factorialControllerFailTestOverflow() {
+        Mockito.when(
+                        operacionesMock
+                                .factorial(ArgumentMatchers.anyInt()))
+                .thenThrow(IllegalArgumentException.class);
+        webTestClient.get()
+                .uri("/factorial?numero=24")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.mensaje")
+                .isEqualTo("operacion invalida");
+    }
 }

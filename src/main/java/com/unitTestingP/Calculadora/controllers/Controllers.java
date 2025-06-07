@@ -28,8 +28,15 @@ public class Controllers {
 
     @GetMapping("/factorial")
     public Map<String, String> factorial(@RequestParam int numero) {
-        return new HashMap<>(){
-            {put("mensaje", "resultado: " + operaciones.factorial(numero));}
-        };
+        try {
+            return new HashMap<>(){
+                {put("mensaje", "resultado: " + operaciones.factorial(numero));}
+            };
+        } catch (ArithmeticException e) {
+            return new HashMap<>(){{put("mensaje", "operacion invalida");}};
+        } catch (IllegalArgumentException e) {
+            return new HashMap<>(){{put("mensaje", "operacion invalida");}};
+        }
+
     }
 }
